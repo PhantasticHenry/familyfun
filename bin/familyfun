@@ -1,1 +1,6 @@
-!#/usr/bin/env ruby
+#!/usr/bin/env ruby
+
+require './lib/evnironment
+Familyfun::CLI.new.call
+
+puts "HI"
