@@ -10,8 +10,21 @@ How to Build a CLI Gem
 
 Class
 - Event
+    -name
+    -location
+    -date
+    -url
+
 - CLI
+    -welome greeting
+    -list events
+    -menu
+    -goodbye
+
 - Scraper
+    -scraped events
+    -scrapred event details
+
 
 
 
