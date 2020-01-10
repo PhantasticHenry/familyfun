@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require './lib/evnironment
-Familyfun::CLI.new.call
+require '../lib/environment'
 
-puts "HI"
+Familyfun::CLI.new.call
