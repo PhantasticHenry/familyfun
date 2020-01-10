@@ -17,8 +17,8 @@ Class
 
 - CLI
     -welome greeting
-    -list events
     -menu
+    -list events
     -goodbye
 
 - Scraper

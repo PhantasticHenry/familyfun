@@ -1,6 +1,7 @@
 class Familyfun::CLI
     def call
         welcome
+        menu
     end
 
     def welcome
@@ -56,4 +57,19 @@ class Familyfun::CLI
         colorizer.write("|      What you would like to do next?      |")
         colorizer.write("----------------------------------------------------------")
     end
+
+    def menu
+        colorizer = Lolize::Colorizer.new
+        prompt = TTY::Prompt.new(active_color: :cyan)
+
+            @menu = [
+                {"All events" => -> do list_events end},
+                {"Free events" => -> do free_events end},
+                {"Editor's choice" => -> do editors_choice end},
+                {"Exit" => -> do goodbye end}
+            ]
+     
+            prompt.select("", @menu)
+    end
+
 end
