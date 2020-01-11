@@ -5,6 +5,8 @@ class Familyfun::CLI
     end
 
     def welcome
+        Familyfun::Scraper.scrape_events
+        Familyfun::Scraper.scrape_details
         system "clear"
         colorizer = Lolize::Colorizer.new
         colorizer.write <<-EOF  
@@ -43,10 +45,10 @@ class Familyfun::CLI
         prompt = TTY::Prompt.new(active_color: :cyan)
         colorizer.write("\nWhat is your name?  ")
         sleep 1
-        @@user_name = gets.strip
+        @user_name = gets.strip
         sleep 1
         colorizer.write " \n------------------------------------------------------"
-        colorizer.write "| Hello #{@@user_name}! Are you ready for some family fun? 🥳   |"
+        colorizer.write "| Hello #{@user_name}! Are you ready for some family fun? 🥳   |"
         colorizer.write " ------------------------------------------------------\n"
         sleep 0.5
         if prompt.yes?("\nWould you like see the menu?\n".blue)
@@ -63,7 +65,7 @@ class Familyfun::CLI
         prompt = TTY::Prompt.new(active_color: :cyan)
 
             @menu = [
-                {"All events" => -> do list_events end},
+                {"All events" => -> do list_all_events end},
                 {"Free events" => -> do free_events end},
                 {"Editor's choice" => -> do editors_choice end},
                 {"Exit" => -> do goodbye end}
@@ -72,4 +74,64 @@ class Familyfun::CLI
             prompt.select("", @menu)
     end
 
+    def list_all_events
+        prompt = TTY::Prompt.new(active_color: :cyan)
+        colorizer = Lolize::Colorizer.new
+        @all_events = Familyfun::Event.all.each.with_index(1) do |e, i|
+            colorizer.write("\n#{i}. #{e.name} - |#{e.date}| - |#{e.location}|\n")
+        end
+        colorizer.write("\n-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        colorizer.write("\n\nAll Events! \n\n")
+        colorizer.write("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
+        puts "Please number 1-#{@all_events.count}."
+        valid = nil
+        while !valid
+            @user_input = gets.strip.to_i-1
+            valid = if (@user_input >= 0) && (@user_input <= "#{@all_events.count}".to_i)
+            else puts "Invalid entry #{@user_name}! Please number 1-#{@all_events.count}.".red.bold
+            end
+        end
+    end
+
+    def self.congrats
+        colorizer = Lolize::Colorizer.new
+        colorizer.write <<-DOC
+
+
+        
+            *    *
+            *         '       *       .  *   '     .           * *
+                                                                        '
+                *                *'          *          *        '
+            .           *               |               /
+                        '.         |    |      '       |   '     *
+                        \\*        \\   \\             /
+                '          \     '* |    |  *        |*                *  *
+                    *      `.       \\   |     *     /    *      '
+        .                  \\      |   \\          /               *
+            *'  *     '      \\      \\   '.       |
+                -._            `                  /         *
+        ' '      ``._   *                           '          .      '
+            *           *\\*          * .   .      *
+        *  '        *    `-._                       .         _..:='        *
+                    .  '      *       *    *   .       _.:--'
+                *           .     .     *         .-'         *
+            .               '             . '   *           *         .
+        *       ___.-=--..-._     *                '               '
+                                        *       *
+                        *        _.'  .'       `.        '  *             *
+            *              *_.-'   .'            `.               *
+                            .'                       `._             *  '
+            '       '                        .       .  `.     .
+                .                      *                  `
+                        *        '             '                          .
+            .                          *        .           *  *
+                    *        .                                    '
+
+
+            DOC
+            sleep 1
+            colorizer.write ("\tExcellent choice #{@user_name}!\n\n")
+            sleep 1
+    end
 end
