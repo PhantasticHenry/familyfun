@@ -66,7 +66,6 @@ class Familyfun::CLI
             @menu = [
                 {"All events" => -> do list_all_events end},
                 {"Free events" => -> do free_events end},
-                {"Editor's choice" => -> do editors_choice end},
                 {"Exit" => -> do goodbye end}
             ]
      
@@ -79,14 +78,16 @@ class Familyfun::CLI
         @all_events = Familyfun::Event.all.each.with_index(1) do |e, i|
             colorizer.write("\n#{i}. #{e.name} - |#{e.date}| - |#{e.location}|\n")
         end
-        colorizer.write("\n-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        colorizer.write("\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         colorizer.write("\n\nAll Events! \n\n")
-        colorizer.write("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
+        colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
         puts "Please number 1-#{@all_events.count}."
         valid = nil
         while !valid
             @user_input = gets.strip.to_i-1
-            valid = if (@user_input >= 0) && (@user_input <= "#{@all_events.count}".to_i)
+            valid = if (@user_input > 0) && (@user_input < "#{@all_events.count}".to_i)
                 system "clear"
                 colorizer.write("You have selected: #{@all_events[@user_input].name}\n\n")
                 sleep 1
@@ -98,9 +99,11 @@ class Familyfun::CLI
                 sleep 0.5
                 colorizer.write("\nURL: #{@all_events[@user_input].url}\n")
                 sleep 0.5
-                more_info = @all_events[@user_input].details.each do |i|
-                    colorizer.write("\n#{i}\n")
-                end                
+                colorizer.write("\n#{@all_events[@user_input].details}\n")  
+                sleep 0.5
+                colorizer.write("\nPrice: #{@all_events[@user_input].price}\n") 
+                sleep 0.5
+                colorizer.write("\nAddress: #{@all_events[@user_input].address}\n")  
             else puts "Invalid entry #{@user_name}! Please number 1-#{@all_events.count}.".red.bold
             end
         end
@@ -109,6 +112,50 @@ class Familyfun::CLI
 
     def self.user_input
         @user_input
+    end
+
+    def free_events
+        system "clear"
+        free = []
+        colorizer = Lolize::Colorizer.new
+        Familyfun::Event.all.each do |e|
+            if e.price == nil
+                free << e
+            end
+        end
+        free.each.with_index(1) do |e, i|
+            colorizer.write("\n#{i}. #{e.name} - |#{e.date}| - |#{e.location}|\n")
+            end
+            colorizer.write("\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+            colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+            colorizer.write("\n\nFree Events! \n\n")
+            colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+            colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
+            puts "Please number 1-#{free.count}."
+            valid = nil
+            while !valid
+                @user_input = gets.strip.to_i-1
+                valid = if (@user_input > 0) && (@user_input < "#{free.count}".to_i)
+                    system "clear"
+                    colorizer.write("You have selected: #{free[@user_input].name}\n\n")
+                    sleep 1
+                    congrats
+                    sleep 0.5
+                    colorizer.write("Date: #{free[@user_input].date}\n")
+                    sleep 0.5
+                    colorizer.write("\nLocation: #{free[@user_input].location}\n")
+                    sleep 0.5
+                    colorizer.write("\nURL: #{free[@user_input].url}\n")
+                    sleep 0.5
+                    colorizer.write("\n#{free[@user_input].details}\n")  
+                    sleep 0.5
+                    colorizer.write("\nPrice: Free! #{free[@user_input].price}\n") 
+                    sleep 0.5
+                    colorizer.write("\nAddress: #{free[@user_input].address}\n")  
+                else puts "Invalid entry #{@user_name}! Please number 1-#{free.count}.".red.bold
+                end
+            end
+            menu2
     end
 
     def congrats
