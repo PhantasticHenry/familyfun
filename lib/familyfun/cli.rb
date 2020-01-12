@@ -6,7 +6,6 @@ class Familyfun::CLI
 
     def welcome
         Familyfun::Scraper.scrape_events
-        Familyfun::Scraper.scrape_details
         system "clear"
         colorizer = Lolize::Colorizer.new
         colorizer.write <<-EOF  
@@ -88,12 +87,31 @@ class Familyfun::CLI
         while !valid
             @user_input = gets.strip.to_i-1
             valid = if (@user_input >= 0) && (@user_input <= "#{@all_events.count}".to_i)
+                system "clear"
+                colorizer.write("You have selected: #{@all_events[@user_input].name}\n\n")
+                sleep 1
+                congrats
+                sleep 0.5
+                colorizer.write("Date: #{@all_events[@user_input].date}\n")
+                sleep 0.5
+                colorizer.write("\nLocation: #{@all_events[@user_input].location}\n")
+                sleep 0.5
+                colorizer.write("\nURL: #{@all_events[@user_input].url}\n")
+                sleep 0.5
+                more_info = @all_events[@user_input].details.each do |i|
+                    colorizer.write("\n#{i}\n")
+                end                
             else puts "Invalid entry #{@user_name}! Please number 1-#{@all_events.count}.".red.bold
             end
         end
+        menu2
     end
 
-    def self.congrats
+    def self.user_input
+        @user_input
+    end
+
+    def congrats
         colorizer = Lolize::Colorizer.new
         colorizer.write <<-DOC
 
@@ -133,5 +151,45 @@ class Familyfun::CLI
             sleep 1
             colorizer.write ("\tExcellent choice #{@user_name}!\n\n")
             sleep 1
+    end
+
+    def menu2
+        colorizer = Lolize::Colorizer.new
+        prompt = TTY::Prompt.new(active_color: :cyan)
+        puts "\n"
+        @menu2 = [
+            'Back to menu',
+            'Exit'
+        ]
+       
+        case prompt.select("Select from list of options.", @menu2)
+        when 'Back to menu'
+            menu
+        when 'Exit'
+            goodbye
+        end
+    end
+
+    def goodbye
+        system "clear"
+        colorizer = Lolize::Colorizer.new
+        pid = fork{ exec "killall afplay" }
+        sleep 0.5
+        colorizer.write <<-DOC
+
+        ooooo   ooooo                                                                                          .o8             .o8                        .o. 
+        `888'   `888'                                                                                         "888            "888                        888 
+         888     888   .oooo.   oooo    ooo  .ooooo.        .oooo.         .oooooooo  .ooooo.   .ooooo.   .oooo888        .oooo888   .oooo.   oooo    ooo 888 
+         888ooooo888  `P  )88b   `88.  .8'  d88' `88b      `P  )88b       888' `88b  d88' `88b d88' `88b d88' `888       d88' `888  `P  )88b   `88.  .8'  Y8P 
+         888     888   .oP"888    `88..8'   888ooo888       .oP"888       888   888  888   888 888   888 888   888       888   888   .oP"888    `88..8'   `8' 
+         888     888  d8(  888     `888'    888    .o      d8(  888       `88bod8P'  888   888 888   888 888   888       888   888  d8(  888     `888'    .o. 
+        o888o   o888o `Y888""8o     `8'     `Y8bod8P'      `Y888""8o      `8oooooo.  `Y8bod8P' `Y8bod8P' `Y8bod88P"      `Y8bod88P" `Y888""8o     .8'     Y8P 
+                                                                          d"     YD                                                           .o..P'          
+                                                                          "Y88888P'                                                           `Y8P'
+        DOC
+        pid = fork{ exec 'afplay', "/Users/henryphan/Downloads/GoodDay_64kb.mp3" }
+        sleep 5
+        pid = fork{ exec "killall afplay" }
+        exit
     end
 end
