@@ -1,6 +1,6 @@
 class Familyfun::Event
 
-    attr_accessor :name, :date, :location, :url, :details
+    attr_accessor :name, :date, :location, :url, :details, :price, :address
 
     @@all = []
 
