@@ -1,11 +1,11 @@
 class Familyfun::CLI
     def call
+        Familyfun::Scraper.scrape_events
         welcome
         menu
     end
 
     def welcome
-        Familyfun::Scraper.scrape_events
         system "clear"
         colorizer = Lolize::Colorizer.new
         colorizer.write <<-EOF  
