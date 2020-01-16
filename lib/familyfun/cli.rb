@@ -36,11 +36,7 @@ class Familyfun::CLI
 
 
                     EOF
-        puts ''
-        puts ''
-        pid = fork{ exec 'afplay', "/Users/henryphan/Downloads/GoodDay_64kb.mp3" }
-        sleep 1.2
-        pid = fork{ exec "killall afplay" }
+        puts "\n\n"
         prompt = TTY::Prompt.new(active_color: :cyan)
         colorizer.write("\nWhat is your name?  ")
         sleep 1
@@ -63,13 +59,13 @@ class Familyfun::CLI
         colorizer = Lolize::Colorizer.new
         prompt = TTY::Prompt.new(active_color: :cyan)
 
-            @menu = [
+            menu = [
                 {"All events" => -> do list_all_events end},
                 {"Free events" => -> do free_events end},
                 {"Exit" => -> do goodbye end}
             ]
      
-            prompt.select("", @menu)
+            prompt.select("", menu)
     end
 
     def list_all_events
@@ -87,7 +83,7 @@ class Familyfun::CLI
         valid = nil
         while !valid
             @user_input = gets.strip.to_i-1
-            valid = if (@user_input > 0) && (@user_input < "#{@all_events.count}".to_i)
+            valid = if (@user_input >= 0) && (@user_input < @all_events.count) && @user_input != String
                 system "clear"
                 colorizer.write("You have selected: #{@all_events[@user_input].name}\n\n")
                 sleep 1
@@ -108,10 +104,6 @@ class Familyfun::CLI
             end
         end
         menu2
-    end
-
-    def self.user_input
-        @user_input
     end
 
     def free_events
@@ -135,7 +127,7 @@ class Familyfun::CLI
             valid = nil
             while !valid
                 @user_input = gets.strip.to_i-1
-                valid = if (@user_input > 0) && (@user_input < "#{free.count}".to_i)
+                valid = if (@user_input >= 0) && (@user_input < free.count) && @user_input != String
                     system "clear"
                     colorizer.write("You have selected: #{free[@user_input].name}\n\n")
                     sleep 1
@@ -204,12 +196,12 @@ class Familyfun::CLI
         colorizer = Lolize::Colorizer.new
         prompt = TTY::Prompt.new(active_color: :cyan)
         puts "\n"
-        @menu2 = [
+        menu2 = [
             'Back to menu',
             'Exit'
         ]
        
-        case prompt.select("Select from list of options.", @menu2)
+        case prompt.select("Select from list of options.", menu2)
         when 'Back to menu'
             menu
         when 'Exit'
@@ -220,8 +212,6 @@ class Familyfun::CLI
     def goodbye
         system "clear"
         colorizer = Lolize::Colorizer.new
-        pid = fork{ exec "killall afplay" }
-        sleep 0.5
         colorizer.write <<-DOC
 
         ooooo   ooooo                                                                                          .o8             .o8                        .o. 
@@ -234,9 +224,6 @@ class Familyfun::CLI
                                                                           d"     YD                                                           .o..P'          
                                                                           "Y88888P'                                                           `Y8P'
         DOC
-        pid = fork{ exec 'afplay', "/Users/henryphan/Downloads/GoodDay_64kb.mp3" }
-        sleep 5
-        pid = fork{ exec "killall afplay" }
         exit
     end
 end
