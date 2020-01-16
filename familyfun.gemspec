@@ -3,11 +3,10 @@ require_relative 'lib/familyfun/version'
 Gem::Specification.new do |spec|
   spec.name          = "familyfun"
   spec.version       = Familyfun::VERSION
-  spec.authors       = ["<github username>"]
-  spec.email         = ["<github email address>"]
+  spec.authors       = ["<PhantasticHenry>"]
+  spec.email         = ["<h.phan06@gmail.com>"]
 
-  spec.summary       = %q{Scrapes data to some family fun events.}
-  # spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{Scrapes event data around the puget sound.}
   spec.homepage      = "https://github.com/PhantasticHenry/familyfun.git"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
