@@ -86,19 +86,15 @@ class Familyfun::CLI
             valid = if (@user_input >= 0) && (@user_input < @all_events.count) && @user_input != String
                 system "clear"
                 colorizer.write("You have selected: #{@all_events[@user_input].name}\n\n")
-                sleep 1
                 congrats
-                sleep 0.5
                 colorizer.write("Date: #{@all_events[@user_input].date}\n")
-                sleep 0.5
                 colorizer.write("\nLocation: #{@all_events[@user_input].location}\n")
-                sleep 0.5
                 colorizer.write("\nURL: #{@all_events[@user_input].url}\n")
-                sleep 0.5
                 colorizer.write("\n#{@all_events[@user_input].details}\n")  
-                sleep 0.5
-                colorizer.write("\nPrice: #{@all_events[@user_input].price}\n") 
-                sleep 0.5
+                    if @all_events[@user_input].price == nil
+                    colorizer.write("\nPrice: Free! #{@all_events[@user_input].price}\n")
+                    else colorizer.write("\nPrice: #{@all_events[@user_input].price}\n")
+                    end
                 colorizer.write("\nAddress: #{@all_events[@user_input].address}\n")  
             else puts "Invalid entry #{@user_name}! Please number 1-#{@all_events.count}.".red.bold
             end
@@ -130,19 +126,12 @@ class Familyfun::CLI
                 valid = if (@user_input >= 0) && (@user_input < free.count) && @user_input != String
                     system "clear"
                     colorizer.write("You have selected: #{free[@user_input].name}\n\n")
-                    sleep 1
                     congrats
-                    sleep 0.5
                     colorizer.write("Date: #{free[@user_input].date}\n")
-                    sleep 0.5
                     colorizer.write("\nLocation: #{free[@user_input].location}\n")
-                    sleep 0.5
                     colorizer.write("\nURL: #{free[@user_input].url}\n")
-                    sleep 0.5
                     colorizer.write("\n#{free[@user_input].details}\n")  
-                    sleep 0.5
                     colorizer.write("\nPrice: Free! #{free[@user_input].price}\n") 
-                    sleep 0.5
                     colorizer.write("\nAddress: #{free[@user_input].address}\n")  
                 else puts "Invalid entry #{@user_name}! Please number 1-#{free.count}.".red.bold
                 end
