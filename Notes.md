@@ -14,11 +14,14 @@ Class
     -location
     -date
     -url
+    -detail
 
 - CLI
+    -call
     -welome greeting
     -menu
-    -list events
+    -list all events
+    -list free events
     -goodbye
 
 - Scraper
