@@ -67,7 +67,7 @@ class Familyfun::CLI
      
             prompt.select("", menu)
     end
-
+    
     def list_all_events
         prompt = TTY::Prompt.new(active_color: :cyan)
         colorizer = Lolize::Colorizer.new
@@ -79,7 +79,7 @@ class Familyfun::CLI
         colorizer.write("\n\nAll Events! \n\n")
         colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
-        puts "Please number 1-#{@all_events.count}."
+        puts "Please enter a number from 1-#{@all_events.count}."
         valid = nil
         while !valid
             @user_input = gets.strip.to_i-1
@@ -96,7 +96,7 @@ class Familyfun::CLI
                     else colorizer.write("\nPrice: #{@all_events[@user_input].price}\n")
                     end
                 colorizer.write("\nAddress: #{@all_events[@user_input].address}\n")  
-            else puts "Invalid entry #{@user_name}! Please number 1-#{@all_events.count}.".red.bold
+            else puts "Invalid entry #{@user_name}! Please enter a number from 1-#{@all_events.count}.".red.bold
             end
         end
         menu2
@@ -119,7 +119,7 @@ class Familyfun::CLI
             colorizer.write("\n\nFree Events! \n\n")
             colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
             colorizer.write("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
-            puts "Please number 1-#{free.count}."
+            puts "Please enter a number from 1-#{free.count}."
             valid = nil
             while !valid
                 @user_input = gets.strip.to_i-1
@@ -133,7 +133,7 @@ class Familyfun::CLI
                     colorizer.write("\n#{free[@user_input].details}\n")  
                     colorizer.write("\nPrice: Free! #{free[@user_input].price}\n") 
                     colorizer.write("\nAddress: #{free[@user_input].address}\n")  
-                else puts "Invalid entry #{@user_name}! Please number 1-#{free.count}.".red.bold
+                else puts "Invalid entry #{@user_name}! Please enter a number from 1-#{free.count}.".red.bold
                 end
             end
             menu2
